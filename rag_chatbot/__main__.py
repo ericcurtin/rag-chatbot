@@ -5,6 +5,7 @@ from .ui import LocalChatbotUI
 from .pipeline import LocalRAGPipeline
 from .logger import Logger
 from .ollama import run_ollama_server, is_port_open
+from .setting import RAGSettings
 
 load_dotenv()
 
@@ -24,11 +25,11 @@ parser.add_argument(
 parser.add_argument("--share", action="store_true", help="Share gradio app")
 args = parser.parse_args()
 
-# OLLAMA SERVER
+# OLLAMA / LLMMAN SERVER
 if args.host != "host.docker.internal":
-    port_number = 11434
-    if not is_port_open(port_number):
-        run_ollama_server()
+    ollama_setting = RAGSettings().ollama
+    if not is_port_open(ollama_setting.port):
+        run_ollama_server(ollama_setting.server)
 
 # LOGGER
 

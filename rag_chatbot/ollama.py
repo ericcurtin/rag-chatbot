@@ -3,7 +3,7 @@ import threading
 import socket
 
 
-def run_ollama_server():
+def run_ollama_server(server: str = "ollama"):
     async def run_process(cmd):
         print(">>> starting", *cmd)
         process = await asyncio.create_subprocess_exec(
@@ -27,7 +27,7 @@ def run_ollama_server():
         await asyncio.gather(pipe(process.stdout), pipe(process.stderr))
 
     async def start_ollama_serve():
-        await run_process(["ollama", "serve"])
+        await run_process([server, "serve"])
 
     def run_async_in_thread(loop, coro):
         asyncio.set_event_loop(loop)

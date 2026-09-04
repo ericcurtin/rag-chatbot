@@ -1,8 +1,18 @@
+import os
 from pydantic import BaseModel, Field
 from typing import List
 
+# Ollama-compatible local model server, selected via LLM_SERVER (default "ollama").
+# llmman (https://github.com/llmmanorg/llmman) serves the Ollama API on port 17434.
+SERVER_PORTS = {"ollama": 11434, "llmman": 17434}
+
+
+def _server() -> str:
+    return os.getenv("LLM_SERVER", "ollama")
+
 
 class OllamaSettings(BaseModel):
+    server: str = Field(default_factory=_server, description="ollama or llmman")
     llm: str = Field(default="llama3:8b-instruct-q8_0", description="LLM model")
     keep_alive: str = Field(default="1h", description="Keep alive time for the server")
     tfs_z: float = Field(default=1.0, description="TFS normalization factor")
@@ -11,7 +21,10 @@ class OllamaSettings(BaseModel):
     repeat_last_n: int = Field(default=64, description="Repeat last n tokens")
     repeat_penalty: float = Field(default=1.1, description="Repeat penalty")
     request_timeout: float = Field(default=300, description="Request timeout")
-    port: int = Field(default=11434, description="Port number")
+    port: int = Field(
+        default_factory=lambda: SERVER_PORTS.get(_server(), 11434),
+        description="Port number",
+    )
     context_window: int = Field(default=8000, description="Context window size")
     temperature: float = Field(default=0.1, description="Temperature")
     chat_token_limit: int = Field(default=4000, description="Chat memory limit")
@@ -57,7 +70,7 @@ class StorageSettings(BaseModel):
 
 
 class RAGSettings(BaseModel):
-    ollama: OllamaSettings = OllamaSettings()
+    ollama: OllamaSettings = Field(default_factory=OllamaSettings)
     retriever: RetrieverSettings = RetrieverSettings()
     ingestion: IngestionSettings = IngestionSettings()
     storage: StorageSettings = StorageSettings()

@@ -248,14 +248,14 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     if args.host != "host.docker.internal":
-        port_number = 11434
-        if not is_port_open(port_number) and args.llm not in [
+        ollama_setting = RAGSettings().ollama
+        if not is_port_open(ollama_setting.port) and args.llm not in [
             "gpt-3.5-turbo",
             "gpt-4",
             "gpt-4o",
             "gpt-4-turbo",
         ]:
-            run_ollama_server()
+            run_ollama_server(ollama_setting.server)
     evaluator = RAGPipelineEvaluator(
         llm=args.llm,
         teacher=args.teacher,

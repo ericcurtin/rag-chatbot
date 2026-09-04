@@ -19,7 +19,7 @@
 ## ⭐️ Key Features
 
 - Easy to run on `Local` or `Kaggle` (new)
-- Using any model from `Huggingface` and `Ollama`
+- Using any model from `Huggingface` and `Ollama` (or [`llmman`](https://github.com/llmmanorg/llmman))
 - Process multiple PDF inputs.
 - Chat with multiples languages (Coming soon).
 - Simple UI with `Gradio`.
@@ -80,6 +80,12 @@ bash ./scripts/install_extra.sh
 curl -fsSL https://ollama.com/install.sh | sh
 ```
 
+- Or [`llmman`](https://github.com/llmmanorg/llmman), a local model runner that serves the Ollama API on port `17434` (Linux, MacOS):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/llmmanorg/llmman/main/install.sh | sh
+```
+
 ##### 2. `Ngrok`
 
 - Macos
@@ -115,6 +121,12 @@ or
 
 ```bash
 uv run python -m rag_chatbot --host localhost
+```
+
+- Using `llmman` instead of `Ollama` (starts `llmman serve` on port `17434` if not already running)
+
+```bash
+LLM_SERVER=llmman uv run python -m rag_chatbot --host localhost
 ```
 
 - Using Ngrok

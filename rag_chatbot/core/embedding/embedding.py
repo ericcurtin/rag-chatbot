@@ -35,12 +35,14 @@ class LocalEmbedding:
     def pull(host: str, **kwargs):
         setting = RAGSettings()
         payload = {"name": setting.ingestion.embed_llm}
-        return requests.post(f"http://{host}:11434/api/pull", json=payload, stream=True)
+        return requests.post(
+            f"http://{host}:{setting.ollama.port}/api/pull", json=payload, stream=True
+        )
 
     @staticmethod
     def check_model_exist(host: str, **kwargs) -> bool:
         setting = RAGSettings()
-        data = requests.get(f"http://{host}:11434/api/tags").json()
+        data = requests.get(f"http://{host}:{setting.ollama.port}/api/tags").json()
         list_model = [d["name"] for d in data["models"]]
         if setting.ingestion.embed_llm in list_model:
             return True
