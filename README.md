@@ -83,7 +83,7 @@ curl -fsSL https://ollama.com/install.sh | sh
 - Or [`llmman`](https://github.com/llmmanorg/llmman), a local model runner that serves the Ollama API on port `17434` (Linux, MacOS):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/llmmanorg/llmman/main/install.sh | sh
+curl -fsSL https://llmmanorg.github.io/install.sh | sh
 ```
 
 ##### 2. `Ngrok`
